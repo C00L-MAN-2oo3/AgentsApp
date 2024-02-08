@@ -1,0 +1,249 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="Хранилище PleasantRustleModel" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Agents">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="Type" Type="nvarchar" MaxLength="3" />
+          <Property Name="Name" Type="nvarchar(max)" />
+          <Property Name="Email" Type="nvarchar(max)" />
+          <Property Name="Phone" Type="nvarchar(max)" />
+          <Property Name="Logo" Type="nvarchar(max)" />
+          <Property Name="Address" Type="nvarchar(max)" />
+          <Property Name="Priority" Type="int" />
+          <Property Name="Director" Type="nvarchar" MaxLength="50" />
+          <Property Name="TaxNumber" Type="nvarchar" MaxLength="10" />
+          <Property Name="CodeRegistration" Type="nchar" MaxLength="9" />
+        </EntityType>
+        <EntityType Name="Products">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Type" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Article" Type="int" Nullable="false" />
+          <Property Name="AmountPeople" Type="int" Nullable="false" />
+          <Property Name="ShopNumber" Type="int" Nullable="false" />
+          <Property Name="MinimumPrice" Type="decimal" Precision="18" Scale="0" Nullable="false" />
+        </EntityType>
+        <!--Ошибки, обнаруженные при создании:
+предупреждение 6002: В таблице или представлении "PleasantRustle.dbo.Realisation" не определен первичный ключ. Ключ был выведен, а определение таблицы или представления было создано в режиме только для чтения.-->
+        <EntityType Name="Realisation">
+          <Key>
+            <PropertyRef Name="ProductID" />
+            <PropertyRef Name="AgentID" />
+            <PropertyRef Name="Date" />
+            <PropertyRef Name="Quantity" />
+          </Key>
+          <Property Name="ProductID" Type="int" Nullable="false" />
+          <Property Name="AgentID" Type="int" Nullable="false" />
+          <Property Name="Date" Type="date" Nullable="false" />
+          <Property Name="Quantity" Type="int" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Realization_Agents">
+          <End Role="Agents" Type="Self.Agents" Multiplicity="1" />
+          <End Role="Realisation" Type="Self.Realisation" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Agents">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Realisation">
+              <PropertyRef Name="AgentID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Realization_Products">
+          <End Role="Products" Type="Self.Products" Multiplicity="1" />
+          <End Role="Realisation" Type="Self.Realisation" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Products">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Realisation">
+              <PropertyRef Name="ProductID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Хранилище PleasantRustleModelContainer">
+          <EntitySet Name="Agents" EntityType="Self.Agents" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Products" EntityType="Self.Products" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Realisation" EntityType="Self.Realisation" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [Realisation].[ProductID] AS [ProductID], 
+    [Realisation].[AgentID] AS [AgentID], 
+    [Realisation].[Date] AS [Date], 
+    [Realisation].[Quantity] AS [Quantity]
+    FROM [dbo].[Realisation] AS [Realisation]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="FK_Realization_Agents" Association="Self.FK_Realization_Agents">
+            <End Role="Agents" EntitySet="Agents" />
+            <End Role="Realisation" EntitySet="Realisation" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Realization_Products" Association="Self.FK_Realization_Products">
+            <End Role="Products" EntitySet="Products" />
+            <End Role="Realisation" EntitySet="Realisation" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="PleasantRustleModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Agents">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="Type" Type="String" MaxLength="3" FixedLength="false" Unicode="true" />
+          <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Email" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Phone" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Logo" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Address" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Priority" Type="Int32" />
+          <Property Name="Director" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="TaxNumber" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="CodeRegistration" Type="String" MaxLength="9" FixedLength="true" Unicode="true" />
+          <NavigationProperty Name="Realisation" Relationship="Self.FK_Realization_Agents" FromRole="Agents" ToRole="Realisation" />
+        </EntityType>
+        <EntityType Name="Products">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Type" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Article" Type="Int32" Nullable="false" />
+          <Property Name="AmountPeople" Type="Int32" Nullable="false" />
+          <Property Name="ShopNumber" Type="Int32" Nullable="false" />
+          <Property Name="MinimumPrice" Type="Decimal" Precision="18" Scale="0" Nullable="false" />
+          <NavigationProperty Name="Realisation" Relationship="Self.FK_Realization_Products" FromRole="Products" ToRole="Realisation" />
+        </EntityType>
+        <EntityType Name="Realisation">
+          <Key>
+            <PropertyRef Name="ProductID" />
+            <PropertyRef Name="AgentID" />
+            <PropertyRef Name="Date" />
+            <PropertyRef Name="Quantity" />
+          </Key>
+          <Property Name="ProductID" Type="Int32" Nullable="false" />
+          <Property Name="AgentID" Type="Int32" Nullable="false" />
+          <Property Name="Date" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="Quantity" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Agents" Relationship="Self.FK_Realization_Agents" FromRole="Realisation" ToRole="Agents" />
+          <NavigationProperty Name="Products" Relationship="Self.FK_Realization_Products" FromRole="Realisation" ToRole="Products" />
+        </EntityType>
+        <Association Name="FK_Realization_Agents">
+          <End Role="Agents" Type="Self.Agents" Multiplicity="1" />
+          <End Role="Realisation" Type="Self.Realisation" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Agents">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Realisation">
+              <PropertyRef Name="AgentID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Realization_Products">
+          <End Role="Products" Type="Self.Products" Multiplicity="1" />
+          <End Role="Realisation" Type="Self.Realisation" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Products">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Realisation">
+              <PropertyRef Name="ProductID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="PleasantRustleEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Agents" EntityType="Self.Agents" />
+          <EntitySet Name="Products" EntityType="Self.Products" />
+          <EntitySet Name="Realisation" EntityType="Self.Realisation" />
+          <AssociationSet Name="FK_Realization_Agents" Association="Self.FK_Realization_Agents">
+            <End Role="Agents" EntitySet="Agents" />
+            <End Role="Realisation" EntitySet="Realisation" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Realization_Products" Association="Self.FK_Realization_Products">
+            <End Role="Products" EntitySet="Products" />
+            <End Role="Realisation" EntitySet="Realisation" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="Хранилище PleasantRustleModelContainer" CdmEntityContainer="PleasantRustleEntities">
+          <EntitySetMapping Name="Agents">
+            <EntityTypeMapping TypeName="PleasantRustleModel.Agents">
+              <MappingFragment StoreEntitySet="Agents">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="Logo" ColumnName="Logo" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="Priority" ColumnName="Priority" />
+                <ScalarProperty Name="Director" ColumnName="Director" />
+                <ScalarProperty Name="TaxNumber" ColumnName="TaxNumber" />
+                <ScalarProperty Name="CodeRegistration" ColumnName="CodeRegistration" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Products">
+            <EntityTypeMapping TypeName="PleasantRustleModel.Products">
+              <MappingFragment StoreEntitySet="Products">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="Article" ColumnName="Article" />
+                <ScalarProperty Name="AmountPeople" ColumnName="AmountPeople" />
+                <ScalarProperty Name="ShopNumber" ColumnName="ShopNumber" />
+                <ScalarProperty Name="MinimumPrice" ColumnName="MinimumPrice" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Realisation">
+            <EntityTypeMapping TypeName="PleasantRustleModel.Realisation">
+              <MappingFragment StoreEntitySet="Realisation">
+                <ScalarProperty Name="ProductID" ColumnName="ProductID" />
+                <ScalarProperty Name="AgentID" ColumnName="AgentID" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Нет" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
